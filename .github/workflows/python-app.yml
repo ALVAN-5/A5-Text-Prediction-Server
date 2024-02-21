@@ -25,7 +25,8 @@ jobs:
         python-version: "3.12"
     - name: DEV_IP_OVERRIDE check
       run: |
-        if [[ $(grep 'DEV_IP_OVERRIDE: list' ./src/main.py) = *"[]" ]] then echo "DEV_IP_OVERRIDE cleared" && exit 0; else exit 1; fi
+        echo $(grep 'DEV_IP_OVERRIDE: list' ./src/main.py)
+        if [[ $(grep 'DEV_IP_OVERRIDE: list' ./src/main.py) = *"[]" ]]; then echo "DEV_IP_OVERRIDE cleared" && exit 0; else exit 1; fi
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
