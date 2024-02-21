@@ -10,7 +10,7 @@ app = Flask(__name__)
 ENVIRONMENT = os.environ['A5TPS_ENV'] or 'DEV'
 
 # THIS SHOULD BE EMPTY BEFORE MERGING
-DEV_IP_OVERRIDE: list[str] = ["192.168.1.155"]
+DEV_IP_OVERRIDE: list[str] = []
 
 res = requests.get(
     'https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/text-prediction-server-allowed-ips.json'
