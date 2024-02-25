@@ -66,37 +66,48 @@ fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # linux
-    echo Linux
+    if ! [ -d ~/.alvan ]; then
+        mkdir ~/.alvan
+    fi
+    if ! [ -f ~/.alvan/ALVAN_ENV ]; then
+        touch ~/.alvan/ALVAN_ENV
+    fi
+    setVars ~/.alvan/ALVAN_ENV
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # Mac OSX
+    # Mac OSX
     if ! [ -d ~/Library/ALVAN ]; then
         mkdir ~/Library/ALVAN
     fi
     if ! [ -f ~/Library/ALVAN/ALVAN_ENV ]; then
         touch ~/Library/ALVAN/ALVAN_ENV
     fi
-
     setVars ~/Library/ALVAN/ALVAN_ENV
+else
+    doNotSave=1
+    echo "System not supported. Try manually setting the following env variables:"
+    echo "A5TPS_ENV: ('DEV'/'PROD')"
+    echo "A5TPS_ALLOWED_IPS_URL: (url to allowed ips json file: ex: 'https://...allowed_ips.json')"
+    echo "A5TPS_ALLOWED_IPS_URL: (url to intents json file: ex: 'https://...intents.json')"
+fi
 
-    if
-        [ $doNotSave == 1 ]
-    then
-        echo "Exiting now."
-    elif
-        [ $(grep -c "Setting ALVAN 5 Text Prediction Server Environment Variables" ~/$rcFile) == 0 ]
-    then
-        export A5TPS_ENV=$env_type
-        export A5TPS_ALLOWED_IPS_URL=$A5TPS_ALLOWED_IPS_URL
-        export A5TPS_INTENTS_URL=$A5TPS_INTENTS_URL
-        echo "\n# Setting ALVAN 5 Text Prediction Server Environment Variables\nsource ~/Library/ALVAN/ALVAN_ENV;" >>~/$rcFile
-        echo -e "Environment variables set. A system restart is recommended$ to include new variables."
-        echo -e "Alternatively, run `source ~/$rcFile$` to refresh terminal with new variables."
+if
+    [ $doNotSave == 1 ]
+then
+    echo "Exiting now."
+elif
+    [ $(grep -c "Setting ALVAN 5 Text Prediction Server Environment Variables" ~/$rcFile) == 0 ]
+then
+    export A5TPS_ENV=$env_type
+    export A5TPS_ALLOWED_IPS_URL=$A5TPS_ALLOWED_IPS_URL
+    export A5TPS_INTENTS_URL=$A5TPS_INTENTS_URL
+    echo "\n# Setting ALVAN 5 Text Prediction Server Environment Variables\nsource ~/Library/ALVAN/ALVAN_ENV;" >> ~/$rcFile
+    echo -e "Environment variables set. A system restart is recommended$ to include new variables."
+    echo -e "Alternatively, run $(source ~/$rcFile$) to refresh terminal with new variables."
 
-    else
-        export A5TPS_ENV=$env_type
-        export A5TPS_ALLOWED_IPS_URL=$A5TPS_ALLOWED_IPS_URL
-        export A5TPS_INTENTS_URL=$A5TPS_INTENTS_URL
-        echo -e "Environment variables set. A system restart is recommended to include new variables."
-        echo -e "Alternatively, run `source ~/$rcFile` to refresh terminal with new variables."
-    fi
+else
+    export A5TPS_ENV=$env_type
+    export A5TPS_ALLOWED_IPS_URL=$A5TPS_ALLOWED_IPS_URL
+    export A5TPS_INTENTS_URL=$A5TPS_INTENTS_URL
+    echo -e "Environment variables set. A system restart is recommended to include new variables."
+    echo -e "Alternatively, run $(source ~/$rcFile) to refresh terminal with new variables."
 fi
