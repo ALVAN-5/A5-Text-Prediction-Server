@@ -12,12 +12,10 @@ ENVIRONMENT = os.environ['A5TPS_ENV'] or 'DEV'
 # THIS SHOULD BE EMPTY BEFORE MERGING
 DEV_IP_OVERRIDE: list[str] = []
 
-res = requests.get(
-    'https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/text-prediction-server-allowed-ips.json'
-)
+res = requests.get(os.environ['A5TPS_ALLOWED_IPS_URL'])
 allowed_ips = json.loads(res.text)
 
-res = requests.get('https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/intents.json')
+res = requests.get(os.environ['A5TPS_INTENTS_URL'])
 with open('intents.json', 'w') as f:
     f.write(res.text)
 pd = predictor.Predictor('intents.json')
@@ -32,7 +30,7 @@ atexit.register(on_exit)
 
 def train():
     global pd
-    res = requests.get('https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/intents.json')
+    res = requests.get(os.environ['A5TPS_INTENTS_URL'])
     with open('intents.json', 'w') as f:
         f.write(res.text)
     pd = predictor.Predictor('intents.json')
@@ -61,10 +59,7 @@ def retrain():
 def update_ips():
     global allowed_ips
     try:
-        res = requests.get(
-            'https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/' +
-            'text-prediction-server-allowed-ips.json'
-        )
+        res = requests.get(os.environ['A5TPS_ALLOWED_IPS_URL'])
         allowed_ips = json.loads(res.text)
     except Exception:
         return Response(
@@ -102,5 +97,5 @@ def query():
 
 
 if __name__ == '__main__':
-    # app.run(host="192.168.1.155")
+    # app.run(host="192.168.1.2")
     app.run(host="localhost")
