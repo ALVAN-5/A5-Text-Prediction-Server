@@ -5,15 +5,22 @@ function setVars() {
     env_type=""
 
     # A5TPS_ENV
-    echo "Is this a dev environment (non-production)? [y/N]: "
-    read isDevEnv
+    echo "Is this a prod environment? [y/N]: "
+    read isProdEnv
 
     if
-        [[ "$isDevEnv" =~ ^([yY][eE][sS]|[yY])$ ]]
+        [[ "$isProdEnv" =~ ^([yY][eE][sS]|[yY])$ ]]
     then
-        env_type=DEV
-    else
         env_type=PROD
+
+        echo "Enter the host IP address for the server: "
+        read A5TPS_HOST_IP
+        echo "Enter the host port for the server: "
+        read A5TPS_HOST_PORT
+    else
+        env_type=DEV
+        A5TPS_HOST_IP=""
+        A5TPS_HOST_PORT=""
     fi
 
     # A5TPS_ALLOWED_IPS_URL
@@ -30,6 +37,14 @@ function setVars() {
     echo "Domain Type (DEV/PROD): $env_type"
     echo "Allowed IPs json url: $A5TPS_ALLOWED_IPS_URL"
     echo "Intents json url: $A5TPS_INTENTS_URL"
+       
+    if
+        [ $env_type == "PROD" ];
+    then
+        echo "Production Host IP Address: $A5TPS_HOST_IP"
+        echo "Production Host Port: $A5TPS_HOST_PORT"
+    fi
+
     echo ""
     echo "Is the above information correct? [y/N]: "
     read confirmation
@@ -37,7 +52,7 @@ function setVars() {
     if
         [[ "$confirmation" =~ ^([yY][eE][sS]|[yY])$ ]]
     then
-        createVarString $env_type $A5TPS_ALLOWED_IPS_URL $A5TPS_INTENTS_URL $1
+        createVarString $env_type $A5TPS_ALLOWED_IPS_URL $A5TPS_INTENTS_URL $1 $A5TPS_HOST_IP $A5TPS_HOST_PORT
     else
         echo "Variables not set."
         doNotSave=1
@@ -48,6 +63,13 @@ function createVarString() {
     echo "export A5TPS_ENV=$1;" >$4
     echo "export A5TPS_ALLOWED_IPS_URL=\"$2\";" >>$4
     echo "export A5TPS_INTENTS_URL=\"$3\";" >>$4
+    
+    if
+        [ $1 == "PROD" ];
+    then
+        echo "export A5TPS_HOST_IP=\"$5\";" >>$4
+        echo "export A5TPS_HOST_PORT=\"$6\";" >>$4
+    fi
 }
 
 if
