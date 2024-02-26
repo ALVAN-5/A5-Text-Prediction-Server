@@ -4,6 +4,7 @@ from prediction import predictor
 import requests
 import json
 import os
+from src.runner import run
 
 app = Flask(__name__)
 
@@ -39,7 +40,6 @@ def train():
 
 @app.before_request
 def before_request():
-    print("remote_addr", request.remote_addr)
     if request.remote_addr not in allowed_ips[ENVIRONMENT.lower()] + DEV_IP_OVERRIDE:
         return Response(status=401)
 
@@ -97,5 +97,4 @@ def query():
 
 
 if __name__ == '__main__':
-    # app.run(host="192.168.1.2")
-    app.run(host="localhost")
+    run(app)
