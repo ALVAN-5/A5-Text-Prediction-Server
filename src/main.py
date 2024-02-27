@@ -4,7 +4,7 @@ from prediction import predictor
 import requests
 import json
 import os
-from src.runner import run
+import runner
 
 app = Flask(__name__)
 
@@ -97,4 +97,4 @@ def query():
 
 
 if __name__ == '__main__':
-    run(app)
+    runner.run(app)
