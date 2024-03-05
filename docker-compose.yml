@@ -1,0 +1,21 @@
+services:
+  develop:
+    build: .
+    image: python:3.12
+    command:
+      python main.py
+    ports:
+      - "80:80"
+      - "5000:5000"
+    networks:
+      - al-net
+    environment:
+      - A5TPS_ENV=PROD
+      - A5TPS_ALLOWES_IPS_URL=https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/text-prediction-server-allowed-ips.json
+      - A5TPS_INTENTS_URL=https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/intents.json
+      - A5TPS_HOST_IP=192.168.2.2
+      - A5TPS_HOST_PORT=80
+
+networks:
+  al-net:
+    external: true
