@@ -5,6 +5,7 @@ import requests
 import json
 import os
 import runner
+import punkt_setup
 
 app = Flask(__name__)
 
@@ -20,6 +21,11 @@ res = requests.get(os.environ['A5TPS_INTENTS_URL'])
 with open('intents.json', 'w') as f:
     f.write(res.text)
 pd = predictor.Predictor('intents.json')
+
+try:
+    pd.query('this is a test')
+except LookupError:
+    punkt_setup.setup()
 
 
 def on_exit():
@@ -75,25 +81,25 @@ def query():
             "Bad request",
             400
         )
-    try:
-        if pd is None:
-            raise Exception
-        output = pd.query(str(request.args.get('query')))
-        query_response = {
-            "tag": output[0],
-            "context_set": output[1],
-            "response_code": output[2],
-            "flags": output[3]
-        }
-        return Response(
-            json.dumps(query_response),
-            status=200
-        )
-    except Exception:
-        return Response(
-            "Internal Server Error",
-            status=500,
-        )
+    # try:
+    if pd is None:
+        raise Exception
+    output = pd.query(str(request.args.get('query')))
+    query_response = {
+        "tag": output[0],
+        "context_set": output[1],
+        "response_code": output[2],
+        "flags": output[3]
+    }
+    return Response(
+        json.dumps(query_response),
+        status=200
+    )
+    # except Exception:
+    #     return Response(
+    #         "Internal Server Error",
+    #         status=500,
+    #     )
 
 
 if __name__ == '__main__':

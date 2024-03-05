@@ -5,7 +5,7 @@ import os
 def run(app):
     if os.environ['A5TPS_ENV'] == 'DEV':
         # Development
-        app.run(host="192.168.1.2")
+        # app.run(host="192.168.0.2", debug=True)
         app.run(host="localhost")
     elif os.environ['A5TPS_ENV'] == 'PROD':
         # Production
