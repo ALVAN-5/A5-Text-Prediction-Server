@@ -42,3 +42,7 @@ jobs:
     - name: Lint with mypy
       run: |
         mypy src --explicit-package-bases
+        
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag a5-text-prediction-server:$(date +%s)
+      if: github.event_name != 'pull_request'
