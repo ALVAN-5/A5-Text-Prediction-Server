@@ -12,9 +12,6 @@ on:
 permissions:
   contents: read
 
-env:
-  curDate: $(date +%s)
-
 jobs:
   build:
 
@@ -52,6 +49,11 @@ jobs:
         registry: ghcr.io
         username: csirota97
         password: ${{ secrets.CR_PAT }}
+        
+    - name: Create Timestamp
+      run: |
+        echo "curDate=$(date +%s)" >> $GITHUB_ENV
+            
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag ghcr.io/alvan-5/a5-text-prediction-server:${{env.curDate}} --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="0.0.0.0" --build-arg A5TPS_HOST_PORT=80
