@@ -44,5 +44,4 @@ jobs:
         mypy src --explicit-package-bases
         
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag a5-text-prediction-server:$(date +%s)
-      if: github.event_name != 'pull_request'
+      run: docker build . --file Dockerfile --tag a5-text-prediction-server:$(date +%s) --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="0.0.0.0" --build-arg A5TPS_HOST_PORT=80
