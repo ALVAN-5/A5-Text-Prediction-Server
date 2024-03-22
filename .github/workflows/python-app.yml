@@ -62,6 +62,7 @@ jobs:
       # if: github.event_name != 'pull_request'
     - name: Publish the Docker image
       run: |
-        docker push ghcr.io/alvan-5/a5-text-prediction-server:${{env.curDate}} ghcr.io/alvan-5/a5-text-prediction-server:latest
+        docker push ghcr.io/alvan-5/a5-text-prediction-server:${{env.curDate}}
+        docker push ghcr.io/alvan-5/a5-text-prediction-server:latest
       # if: github.event_name != 'pull_request'
 
