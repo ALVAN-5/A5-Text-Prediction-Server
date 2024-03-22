@@ -12,6 +12,9 @@ on:
 permissions:
   contents: read
 
+env:
+  curDate: $(date +%s)
+
 jobs:
   build:
 
@@ -51,7 +54,6 @@ jobs:
         password: ${{ secrets.CR_PAT }}
     - name: Build the Docker image
       run: |
-        curDate=$(date +%s)
         docker build . --file Dockerfile --tag ghcr.io/alvan-5/a5-text-prediction-server:$curDate --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="0.0.0.0" --build-arg A5TPS_HOST_PORT=80
     - name: Publish the Docker image
       run: |
