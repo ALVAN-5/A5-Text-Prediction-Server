@@ -102,5 +102,16 @@ def query():
     #     )
 
 
+@app.route('/health/', methods=['GET'])
+@app.route('/health', methods=['GET'])
+def health():
+    '''
+    return 200
+    '''
+    return Response(
+        json.dumps({'health': 'ok'}),
+        status=200
+    ) 
+
 if __name__ == '__main__':
     runner.run(app)
