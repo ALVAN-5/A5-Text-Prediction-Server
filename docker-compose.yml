@@ -1,5 +1,6 @@
 services:
   develop:
+    container_name: a5-text-prediction-server
     build: .
     image: python:3.12
     command:

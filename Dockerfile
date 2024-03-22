@@ -19,7 +19,7 @@ CMD ["python", "main.py"]
 
 # Put 192.168.2.69 in the ip override list the run the following:
 # docker network create --subnet 192.168.2.0/24 al-net # This only has to be run once
-# docker build -t a5-text-prediction-server:0.0.0.SNAPSHOT . --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="192.168.2.2" --build-arg A5TPS_HOST_PORT=80
+# docker build -t a5-text-prediction-server:0.0.0.SNAPSHOT . --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="0.0.0.0" --build-arg A5TPS_HOST_PORT=80
 # docker run --network=al-net --ip 192.168.2.2 -p 80:80 -p 5000:5000 a5-text-prediction-server:0.0.0.SNAPSHOT
 
 # Testing Container
