@@ -49,20 +49,21 @@ jobs:
         registry: ghcr.io
         username: csirota97
         password: ${{ secrets.CR_PAT }}
-      # if: github.event_name != 'pull_request'
+      if: github.event_name != 'pull_request'
         
     - name: Create Timestamp
       run: |
         echo "curDate=$(date +%s)" >> $GITHUB_ENV
-      # if: github.event_name != 'pull_request'
+      if: github.event_name != 'pull_request'
             
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag ghcr.io/alvan-5/a5-text-prediction-server:${{env.curDate}} --tag ghcr.io/alvan-5/a5-text-prediction-server:latest --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="0.0.0.0" --build-arg A5TPS_HOST_PORT=80
-      # if: github.event_name != 'pull_request'
+      if: github.event_name != 'pull_request'
+  
     - name: Publish the Docker image
       run: |
         docker push ghcr.io/alvan-5/a5-text-prediction-server:${{env.curDate}}
         docker push ghcr.io/alvan-5/a5-text-prediction-server:latest
-      # if: github.event_name != 'pull_request'
+      if: github.event_name != 'pull_request'
 
