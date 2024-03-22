@@ -12,7 +12,7 @@ app = Flask(__name__)
 ENVIRONMENT = os.environ['A5TPS_ENV'] or 'DEV'
 
 # THIS SHOULD BE EMPTY BEFORE MERGING
-DEV_IP_OVERRIDE: list[str] = ['172.23.0.1']
+DEV_IP_OVERRIDE: list[str] = []
 
 res = requests.get(os.environ['A5TPS_ALLOWED_IPS_URL'])
 allowed_ips = json.loads(res.text)
