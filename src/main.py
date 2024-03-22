@@ -12,7 +12,7 @@ app = Flask(__name__)
 ENVIRONMENT = os.environ['A5TPS_ENV'] or 'DEV'
 
 # THIS SHOULD BE EMPTY BEFORE MERGING
-DEV_IP_OVERRIDE: list[str] = []
+DEV_IP_OVERRIDE: list[str] = ['172.23.0.1']
 
 res = requests.get(os.environ['A5TPS_ALLOWED_IPS_URL'])
 allowed_ips = json.loads(res.text)
@@ -101,6 +101,17 @@ def query():
     #         status=500,
     #     )
 
+
+@app.route('/health/', methods=['GET'])
+@app.route('/health', methods=['GET'])
+def health():
+    '''
+    return 200
+    '''
+    return Response(
+        json.dumps({'health': 'ok'}),
+        status=200
+    ) 
 
 if __name__ == '__main__':
     runner.run(app)
