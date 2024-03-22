@@ -45,6 +45,7 @@ jobs:
         
     - name: Build the Docker image
       run: |
+        echo ${{ secrets.CR_PAT }} | sudo docker login ghcr.io -u ${{ variables.PACKAGE_USER }} --password-stdin
         curDate=$(date +%s)
         docker build . --file Dockerfile --tag ghcr.io/alvan-5/a5-text-prediction-server:$curDate --build-arg A5TPS_ENV=PROD --build-arg A5TPS_HOST_IP="0.0.0.0" --build-arg A5TPS_HOST_PORT=80
         docker push ghcr.io/alvan-5/a5-text-prediction-server:$curDate
