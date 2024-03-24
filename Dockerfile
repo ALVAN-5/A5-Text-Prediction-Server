@@ -3,6 +3,7 @@ COPY . /app
 WORKDIR /app
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install -r requirements.txt
+RUN python install_nltk.py
 ARG A5TPS_ENV
 ENV A5TPS_ENV=${A5TPS_ENV}
 ARG A5TPS_ALLOWED_IPS_URL=https://raw.githubusercontent.com/ALVAN-5/A5-Static-Content/master/backend/text-prediction-server-allowed-ips.json
